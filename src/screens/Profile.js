@@ -4,6 +4,8 @@ import { Pressable } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
 import { auth } from "../firebase/config";
+import { FlatList } from "react-native-web";
+import { db } from "../firebase/config";
 
 class Profile extends Component{
     constructor(props){
@@ -11,6 +13,7 @@ class Profile extends Component{
         this.state={
             UserEmail: "",
             UserName: "",
+            UserPost: [],
         }
     }
     componentDidMount(){
@@ -18,24 +21,41 @@ class Profile extends Component{
         if(user){
             this.setState({
                 UserEmail: auth.currentUser.email,
-                userName: user.displayName ,
+                userName: auth.currentUser.displayName,
             })
         }
+
+        db.collection("posts")
+            .where("email", "==", auth.currentUser.email)
+            
+            .onSnapshot((docs) => {
+          let posts = [];
+          docs.forEach((doc) => {
+            posts.push({
+              id: doc.id,
+              data: doc.data(),
+            });
+          });
+          this.setState({ userPosts: posts });
+        });
     }
+
     render(){
         return(
             <View style={styles.conteiner}> 
                 <Text style={styles.title}>Mi Perfil</Text>
                 <Text style={styles.username}>{this.state.UserName}</Text>
                 <Text style={styles.email}>{this.state.UserEmail}</Text>
+                 <Text style={styles.subtitle}>Últimos posteos:</Text>
+                
                 <Pressable style={styles.boton} onPress={()=>this.props.navigation.navigate('Login')}>
                 <Text>Cerrar sesion</Text>
                 </Pressable>
             </View>
         )
     }
-    
-}
+} 
+
 
 const styles = StyleSheet.create({
   container: {
