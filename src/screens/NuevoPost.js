@@ -6,7 +6,7 @@ import { Text } from "react-native";
 import { View } from "react-native";
 import { db, auth } from '../firebase/config'
 
-class NewPost extends Component{
+class NuevoPost extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
   
   });
 
-export default NewPost
+export default NuevoPost
