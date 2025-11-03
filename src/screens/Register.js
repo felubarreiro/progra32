@@ -19,26 +19,23 @@ class Register extends Component{
              error3: "",
         }
     }
-  
-    register(email,pass,username){
-
-          if (email.length < 1) {
-    this.setState({ error1: "Este campo es obligatorio" });
-    return;
-  }
-
-  if (pass.length < 1) {
-    this.setState({ error2: "Este campo es obligatorio" });
-    return;
-  }
-  if (username.length < 1) {
-    this.setState({ error3: "Este campo es obligatorio" });
-    return;
-  }
     register(email,pass, user){
       email = this.state.email
       pass = this.state.password
       user = this.state.userName
+      if (email.length < 1) {
+        this.setState({ error1: "Este campo es obligatorio" });
+        return;
+      }
+    
+      if (pass.length < 1) {
+        this.setState({ error2: "Este campo es obligatorio" });
+        return;
+      }
+      if (user.length < 1) {
+        this.setState({ error3: "Este campo es obligatorio" });
+        return;
+      }
         auth.createUserWithEmailAndPassword(email,pass)
         .then(response=>{this.setState({registered:true})
               db.collection('users').add({
@@ -75,8 +72,6 @@ class Register extends Component{
                  {this.state.error2 ? (
           <Text style={styles.error}>{this.state.error2}</Text>
         ) : null}
-
-            <Pressable style={styles.boton2} onPress={()=>this.register(this.state.email,this.state.password,this.state.userName)}> 
             <Pressable style={styles.boton2} onPress={()=>this.register()}> 
                 <Text>Registrarme</Text>
             </Pressable>
