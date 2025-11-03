@@ -4,7 +4,7 @@ import { TextInput } from "react-native";
 import { Pressable } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
-import { auth } from "../firebase/config";
+import { auth , db } from "../firebase/config";
 
 
 class Register extends Component{
@@ -17,10 +17,20 @@ class Register extends Component{
         }
     }
   
-    register(email,pass){
+    register(email,pass, user){
+      email = this.state.email
+      pass = this.state.password
+      user = this.state.userName
         auth.createUserWithEmailAndPassword(email,pass)
-        .then(response=>{this.setState({registered:true});
-        this.props.navigation.navigate('Login');
+        .then(response=>{this.setState({registered:true})
+              db.collection('users').add({
+                  email: auth.currentUser.email,
+                  userName: user,
+                  createdAt: Date.now(),
+              })
+            .then(res => console.log(res))
+            .catch(error => console.log(error))
+            this.props.navigation.navigate('Login')
     })
     .catch(error=> {this.setState({error: "fallo en el registro"})})
 
@@ -36,7 +46,7 @@ class Register extends Component{
             <TextInput style={styles.form} keyboardType="default" onChangeText={text=>this.setState({userName:text})} value={this.state.userName}/>
             <Text style={styles.subtitle}>Password</Text>
             <TextInput style={styles.form} keyboardType="default" onChangeText={text=>this.setState({password:text})} value={this.state.password} secureTextEntry={true}/>
-            <Pressable style={styles.boton2} onPress={()=>this.register(this.state.email,this.state.password)}> 
+            <Pressable style={styles.boton2} onPress={()=>this.register()}> 
                 <Text>Registrarme</Text>
             </Pressable>
             <Pressable style={styles.boton} onPress={()=>this.props.navigation.navigate('Login')}> 

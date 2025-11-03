@@ -17,7 +17,7 @@ class HomeMenu extends Component{
         return(
             <Tab.Navigator>
                 <Tab.Screen name="Home" component={Home} options={{tabBarIcon: ()=><Entypo name="home" size={24} color="black" />}}/>
-                <Tab.screen name="NuevoPost" component={NuevoPost} options={{tabBarIcon:()=> <AntDesign name="plus-square" size={24} color="black" />}}/>
+                <Tab.Screen name="NuevoPost" component={NuevoPost} options={{tabBarIcon:()=> <AntDesign name="plus-square" size={24} color="black" />}}/>
                 <Tab.Screen name="Profile" component={Profile} options={{tabBarIcon: ()=> <MaterialIcons name="account-circle" size={24} color="black" />}}/>
             </Tab.Navigator>
         )

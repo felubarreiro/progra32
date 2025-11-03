@@ -33,7 +33,6 @@ class Home extends Component{
     render(){
         return(
             <View>
-                <Text>Posts:</Text>
                 <FlatList
                     data={this.state.posts}
                     keyExtractor={(item) => item.id.toString()}
