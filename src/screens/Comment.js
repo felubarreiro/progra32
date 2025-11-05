@@ -56,8 +56,6 @@ class Comentarios extends Component {
         this.setState({ error: "Error al crear el comentario" })
       );
   }
-    volverHome = () => {
-        this.props.navigation.navigate("HomeMenu")};
 
   render() {
     return (
@@ -80,31 +78,13 @@ class Comentarios extends Component {
         <Pressable style={styles.button} onPress={() => this.addComment()}>
         <Text style={styles.buttonText}>Enviar</Text>
         </Pressable>
-
-        <Pressable style={styles.backButton} onPress={() => this.volverHome()}>
-        <Text style={styles.botonhometexto}>Volver a Home</Text>
-        </Pressable>
-
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    botonhome: {
-     color: "#1DA1F2",
-        fontWeight: "bold",
-        fontSize: 15, 
-    },
-botonhometexto: {
-backgroundColor: "#fff",
-  borderColor: "#1DA1F2",
-  borderWidth: 1,
-  borderRadius: 8,
-  padding: 10,
-  alignItems: "center",
-  marginTop: 12,
-  },
+
   container: {
     flex: 1,
     backgroundColor: "#F5F8FA",
