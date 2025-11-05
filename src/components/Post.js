@@ -6,7 +6,6 @@ import { View } from "react-native";
 import { db, auth } from '../firebase/config'
 import firebase from "firebase";
 
-
 class Post extends Component{
     constructor(props){
         super(props)
@@ -15,7 +14,6 @@ class Post extends Component{
     }
     
     onLike(){
-       
         if(auth.currentUser){
             db.collection('posts')
             .doc(this.props.id)
@@ -23,27 +21,34 @@ class Post extends Component{
                 likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
             })
             .then(response => {
-                console.log('Like agregado')
             })
             .catch(error => {
                 console.log(error)
             })
-            console.log(likes);
         }
     }
 
     onUnlike(){
         if(auth.currentUser){
-            db.collection('posts').doc(this.props.id).update({
+            db.collection('posts')
+            .doc(this.props.id)
+            .update({
                 likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
             })
             .then(response => {
-                console.log('Like removido')
             })
             .catch(error => {
                 console.log(error)
             })
         }
+    }
+    onDelete(){
+        db.collection('posts').doc(this.props.id).delete()
+        .then(response => {
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     render(){
@@ -59,11 +64,17 @@ class Post extends Component{
                         :
                         <Pressable style={styles.boton} onPress={()=>this.onLike()}>
                             <Text>Like</Text>
-                        </Pressable> ) : (<Text style={styles.noAuth}>Debes estar logueado para dar like</Text>)}
-                </View>
+                        </Pressable>
+                        ) : (<Text style={styles.noAuth}>Debes estar logueado para dar like</Text>)}
+                {auth.currentUser && auth.currentUser.email === this.props.postData.email ? 
+                <Pressable style={styles.botonD} onPress={()=>this.onDelete()}>
+                    <Text style={styles.deleteText}>Borrar post</Text>
+                </Pressable> : ''}
+            </View>
         )
     }
 }
+
 const styles = StyleSheet.create({
     title:{
         fontSize:20,
@@ -93,6 +104,17 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginBottom:7
     },
+    botonD:{
+        backgroundColor:"#FF8A75",
+        borderRadius:4,
+        padding:10,
+        alignItems:'center',
+        marginBottom:7
+    },
+    deleteText:{
+        color:'white',
+        fontWeight:'bold'
+    },
     noAuth:{
         fontSize:12,
         color:'red',
@@ -102,8 +124,6 @@ const styles = StyleSheet.create({
     conteiner:{
         padding:10
     }
-  
-  });
-
+});
 
 export default Post

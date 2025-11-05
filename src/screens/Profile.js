@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { auth } from "../firebase/config";
 import { FlatList } from "react-native-web";
 import { db } from "../firebase/config";
+import Post from "../components/Post";
 
 class Profile extends Component{
     constructor(props){
@@ -36,9 +37,10 @@ class Profile extends Component{
               data: doc.data(),
             });
           });
-          this.setState({ userPosts: posts });
-        });
-    }
+          this.setState({ UserPost: posts });
+          console.log(this.state.UserPost);
+          
+        });}
 
     render(){
         return(
@@ -47,7 +49,11 @@ class Profile extends Component{
                 <Text style={styles.username}>{this.state.UserName}</Text>
                 <Text style={styles.email}>{this.state.UserEmail}</Text>
                  <Text style={styles.subtitle}>Últimos posteos:</Text>
-                
+                 <FlatList
+                    data={this.state.UserPost}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({item}) => <Post postData={item.data} id={item.id.toString()}/>}
+                />
                 <Pressable style={styles.boton} onPress={()=>this.props.navigation.navigate('Login')}>
                 <Text>Cerrar sesion</Text>
                 </Pressable>
