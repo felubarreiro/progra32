@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
-import { Text } from "react-native";
+import { FlatList, Text } from "react-native";
 import { View } from "react-native";
 import { db, auth } from '../firebase/config'
 import firebase from "firebase";
@@ -29,31 +29,6 @@ class Post extends Component{
         }
     }
 
-    addComment(postId) {
-        if (this.state.comment.length < 1) {
-          this.setState({ error: "No puedes enviar un comentario vacío" });
-          return;
-        }
-        if(auth.currentUser){
-        db.collection("posts")
-          .doc(postId)
-          .collection("comments")
-          .add({
-            email: auth.currentUser.email,
-            text: this.state.comment,
-            createdAt: Date.now(),
-          })
-          .then(response => {
-                    this.setState({posted: true})
-                    this.props.navigation.navigate('Home')
-            })
-          .catch(error => {
-                    this.setState({error: 'Fallo al crear el comentario'})
-                })
-                 } else {
-                this.setState({error: 'Debes estar logueado para crear un post'})
-            }
-      }
 
     onUnlike(){
         if(auth.currentUser){
@@ -78,17 +53,26 @@ class Post extends Component{
         })
     }
 
+    Ircomentarios() {
+    if (auth.currentUser) {
+      this.props.navigation.navigate("Comentarios", {
+        postId: this.props.id,
+      });
+    } else {
+      alert("Debes estar logueado para comentar");
+    }
+  }
+
+    
+
     render(){
         return(
             <View style={styles.conteiner}>
                 <Text style={styles.title}>{this.props.postData.email}</Text>
                 <Text style={styles.message}>{this.props.postData.message}</Text>
-                <Text style={styles.subtitle}>Comentar</Text>
-                                <TextInput style={styles.input} keyboardType="default" onChangeText={text=>this.setState({comment:text})} value={this.state.comment}/>
-                                <Text style={styles.error}>{this.state.error}</Text>
-                                <Pressable style={styles.boton2} onPress={()=>this.this.addComment(item.id)}> 
-                                <Text>Enviar comentario</Text>
-                                </Pressable>
+                <Pressable style={styles.commentextb} onPress={() => this.Ircomentarios()}>
+                <Text style={styles.commentText}>Comentar</Text>
+                </Pressable>
                 <Text style={styles.likes}>Likes: {this.props.postData.likes ? this.props.postData.likes.length : 0}</Text>
                 {auth.currentUser ? ( this.props.postData.likes.includes(auth.currentUser.email) ?
                         <Pressable style={styles.boton2} onPress={()=>this.onUnlike()}>
@@ -99,16 +83,27 @@ class Post extends Component{
                             <Text>Like</Text>
                         </Pressable>
                         ) : (<Text style={styles.noAuth}>Debes estar logueado para dar like</Text>)}
-                {auth.currentUser && auth.currentUser.email === this.props.postData.email ? 
+                {auth.currentUser && auth.currentUser.email === this.props.postData.email ? (
                 <Pressable style={styles.botonD} onPress={()=>this.onDelete()}>
                     <Text style={styles.deleteText}>Borrar post</Text>
-                </Pressable> : ''}
+                </Pressable>) : null}
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    commentextb: {
+        backgroundColor: "#1DA1F2",
+        borderRadius: 6,
+        padding: 10,
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    commentText: {
+        color: "#fff",
+        fontWeight: "bold",
+    },
     title:{
         fontSize:20,
         fontWeight:'bold',
