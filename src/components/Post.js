@@ -5,6 +5,7 @@ import { Text } from "react-native";
 import { View } from "react-native";
 import { db, auth } from '../firebase/config'
 import firebase from "firebase";
+import { TextInput } from "react-native";
 
 class Post extends Component{
     constructor(props){
@@ -27,6 +28,32 @@ class Post extends Component{
             })
         }
     }
+
+    addComment(postId) {
+        if (this.state.comment.length < 1) {
+          this.setState({ error: "No puedes enviar un comentario vacío" });
+          return;
+        }
+        if(auth.currentUser){
+        db.collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .add({
+            email: auth.currentUser.email,
+            text: this.state.comment,
+            createdAt: Date.now(),
+          })
+          .then(response => {
+                    this.setState({posted: true})
+                    this.props.navigation.navigate('Home')
+            })
+          .catch(error => {
+                    this.setState({error: 'Fallo al crear el comentario'})
+                })
+                 } else {
+                this.setState({error: 'Debes estar logueado para crear un post'})
+            }
+      }
 
     onUnlike(){
         if(auth.currentUser){
@@ -56,6 +83,12 @@ class Post extends Component{
             <View style={styles.conteiner}>
                 <Text style={styles.title}>{this.props.postData.email}</Text>
                 <Text style={styles.message}>{this.props.postData.message}</Text>
+                <Text style={styles.subtitle}>Comentar</Text>
+                                <TextInput style={styles.input} keyboardType="default" onChangeText={text=>this.setState({comment:text})} value={this.state.comment}/>
+                                <Text style={styles.error}>{this.state.error}</Text>
+                                <Pressable style={styles.boton2} onPress={()=>this.this.addComment(item.id)}> 
+                                <Text>Enviar comentario</Text>
+                                </Pressable>
                 <Text style={styles.likes}>Likes: {this.props.postData.likes ? this.props.postData.likes.length : 0}</Text>
                 {auth.currentUser ? ( this.props.postData.likes.includes(auth.currentUser.email) ?
                         <Pressable style={styles.boton2} onPress={()=>this.onUnlike()}>

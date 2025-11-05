@@ -15,7 +15,6 @@ class NuevoPost extends Component{
         }
     }
     onSubmit(message){
-        console.log(this.state.message);
         message = this.state.message
         if(auth.currentUser){
             db.collection('posts').add({
@@ -24,6 +23,7 @@ class NuevoPost extends Component{
                 createdAt: Date.now(),
                 likes: [],
             })
+            
              .then(response => {
                 this.setState({posted: true})
                 this.props.navigation.navigate('Home')

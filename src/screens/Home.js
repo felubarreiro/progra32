@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { FlatList, Text } from "react-native";
 import { View } from "react-native";
-import { db } from "../firebase/config";
 import Post from "../components/Post";
+import { StyleSheet } from "react-native";
+import { TextInput } from "react-native";
+import { Pressable } from "react-native";
+import { db , auth } from '../firebase/config'
 
 class Home extends Component{
     constructor(props){
@@ -29,6 +32,7 @@ class Home extends Component{
             }
         )
     }
+    
 
     render(){
         return(
@@ -42,5 +46,49 @@ class Home extends Component{
         )
     }
 }
+
+
+const styles = StyleSheet.create({
+    title:{
+        fontSize:20,
+        fontWeight:'bold',
+        marginBottom:5,
+        marginTop: 7,
+    },
+    boton:{
+        backgroundColor:'orange',
+        borderRadius:4,
+        padding:10,
+        alignItems:'center',
+        marginBottom:7,
+        marginTop: 7,
+    },
+    boton2:{
+        backgroundColor:'lightblue',
+        borderRadius:4,
+        padding:10,
+        alignItems:'center',
+        marginTop: 9,
+    },
+    conteiner:{
+        padding:10
+    },
+    input:{
+        borderColor: 'grey',
+        borderRadius: 3,
+        borderWidth: 2,
+        padding: 10,
+    },
+    subtitle:{
+        fontSize:15,
+        fontWeight:'semibold',
+        marginBottom:5,
+        marginTop:7,
+    },
+    error:{
+        color:'red'
+    }
+  
+  });
 
 export default Home
