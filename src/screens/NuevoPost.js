@@ -23,8 +23,7 @@ class NuevoPost extends Component{
                 createdAt: Date.now(),
                 likes: [],
             })
-            
-             .then(response => {
+            .then(response => {
                 this.setState({posted: true})
                 this.props.navigation.navigate('Home')
             })
@@ -42,9 +41,7 @@ class NuevoPost extends Component{
     return(
         <View style={styles.conteiner}>
             <Text style={styles.title}>Nuevo Post</Text>
-            <Pressable style={styles.boton} onPress={()=>this.props.navigation.navigate('Home')}> 
-                <Text>Volver al Home</Text>
-            </Pressable>
+           
             <Text style={styles.subtitle}>Mensaje</Text>
             <TextInput style={styles.input} keyboardType="default" onChangeText={text=>this.setState({message:text})} value={this.state.message}/>
             <Text style={styles.error}>{this.state.error}</Text>

@@ -50,14 +50,13 @@ class Profile extends Component{
   render(){
     return(
       <View style={styles.conteiner}> 
-        <Text style={styles.title}>Mi Perfil</Text>
         <Text style={styles.username}>{this.state.UserName}</Text>
         <Text style={styles.email}>{this.state.UserEmail}</Text>
         <Text style={styles.subtitle}>Últimos posteos:</Text>
         <FlatList
           data={this.state.UserPost}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation}/>}
+          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation} showDelete={true}/>}
         />
         <Pressable style={styles.boton} onPress={()=>auth.signOut()}>
           <Text>Cerrar sesion</Text>
@@ -70,20 +69,14 @@ const styles = StyleSheet.create({
   conteiner: {
     padding: 10,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   username: {
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: "600",
-    marginBottom: 4,
   },
   email: {
-    fontSize: 16,
-    color: "gray",
+    fontSize: 25,
     marginBottom: 20,
+    fontWeight: "600",
   },
   subtitle: {
     fontSize: 16,

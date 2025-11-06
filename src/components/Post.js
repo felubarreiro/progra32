@@ -5,7 +5,8 @@ import { FlatList, Text } from "react-native";
 import { View } from "react-native";
 import { db, auth } from '../firebase/config'
 import firebase from "firebase";
-import { TextInput } from "react-native";
+import { TextInput } from "react-native"; 
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 class Post extends Component{
     constructor(props){
@@ -13,7 +14,6 @@ class Post extends Component{
         this.state={
         }
     }
-    
     onLike(){
         if(auth.currentUser){
             db.collection('posts')
@@ -28,8 +28,6 @@ class Post extends Component{
             })
         }
     }
-
-
     onUnlike(){
         if(auth.currentUser){
             db.collection('posts')
@@ -63,95 +61,97 @@ class Post extends Component{
     }
   }
 
-    
-
     render(){
         return(
             <View style={styles.conteiner}>
-                <Text style={styles.title}>{this.props.postData.email}</Text>
+                <Text style={styles.userEmail}>{this.props.postData.email}</Text>
                 <Text style={styles.message}>{this.props.postData.message}</Text>
-                <Pressable style={styles.commentextb} onPress={() => this.Ircomentarios()}>
-                <Text style={styles.commentText}>Comentar</Text>
-                </Pressable>
-                <Text style={styles.likes}>Likes: {this.props.postData.likes ? this.props.postData.likes.length : 0}</Text>
-                {auth.currentUser ? ( this.props.postData.likes.includes(auth.currentUser.email) ?
-                        <Pressable style={styles.boton2} onPress={()=>this.onUnlike()}>
-                            <Text>Quitar like</Text>
-                        </Pressable>
-                        :
-                        <Pressable style={styles.boton} onPress={()=>this.onLike()}>
-                            <Text>Like</Text>
-                        </Pressable>
-                        ) : (<Text style={styles.noAuth}>Debes estar logueado para dar like</Text>)}
-                {auth.currentUser && auth.currentUser.email === this.props.postData.email ? (
-                <Pressable style={styles.botonD} onPress={()=>this.onDelete()}>
+                <View style={styles.footer}>
+                    <Pressable style={styles.likeContainer} onPress={() => this.props.postData.likes.includes(auth.currentUser.email) ? this.onUnlike() : this.onLike()}>
+                        {this.props.postData.likes.includes(auth.currentUser.email) ? (
+                            <Ionicons name="heart" size={20} color="red" style={styles.heartIcon} />
+                        ) : (
+                            <Ionicons name="heart-outline" size={20} color="black" style={styles.heartIcon} />
+                        )}
+                        <Text style={styles.likes}>{this.props.postData.likes ? this.props.postData.likes.length : 0} likes</Text>
+                    </Pressable>
+                    <Pressable style={styles.commentButton} onPress={() => this.Ircomentarios()}>
+                        <Text style={styles.commentText}>Comentar</Text>
+                    </Pressable>
+                </View>
+                {this.props.showDelete && auth.currentUser && auth.currentUser.email === this.props.postData.email ? (
+                <Pressable style={styles.deleteButton} onPress={()=>this.onDelete()}>
                     <Text style={styles.deleteText}>Borrar post</Text>
                 </Pressable>) : null}
+                
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    commentextb: {
-        backgroundColor: "#1DA1F2",
+    conteiner: {
+        backgroundColor: '#E8E8E8',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#000',
+        padding: 15,
+        
+        marginHorizontal: 10,
+        marginTop: 40,
+    },
+    userEmail: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 8,
+        color: '#000',
+    },
+    message: {
+        fontSize: 18,
+        marginBottom: 12,
+        color: '#000',
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 8,
+    },
+    likeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    heartIcon: {
+        marginRight: 5,
+    },
+    likes: {
+        fontSize: 14,
+        color: '#000',
+    },
+    commentButton: {
+        backgroundColor: '#ADD8E6',
         borderRadius: 6,
-        padding: 10,
-        alignItems: "center",
-        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#000',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
     },
     commentText: {
-        color: "#fff",
-        fontWeight: "bold",
+        color: '#000',
+        fontSize: 14,
+        fontWeight: '500',
     },
-    title:{
-        fontSize:20,
-        fontWeight:'bold',
-        marginBottom:5
+    deleteButton: {
+        backgroundColor: "#FF8A75",
+        borderRadius: 4,
+        padding: 10,
+        alignItems: 'center',
+        marginTop: 10,
     },
-    message:{
-        fontSize:16,
-        marginBottom:10
+    deleteText: {
+        color: 'white',
+        fontWeight: 'bold',
     },
-    likes:{
-        fontSize:14,
-        marginBottom:5,
-        color:'gray'
-    },
-    boton:{
-        backgroundColor:'orange',
-        borderRadius:4,
-        padding:10,
-        alignItems:'center',
-        marginBottom:7
-    },
-    boton2:{
-        backgroundColor:'lightblue',
-        borderRadius:4,
-        padding:10,
-        alignItems:'center',
-        marginBottom:7
-    },
-    botonD:{
-        backgroundColor:"#FF8A75",
-        borderRadius:4,
-        padding:10,
-        alignItems:'center',
-        marginBottom:7
-    },
-    deleteText:{
-        color:'white',
-        fontWeight:'bold'
-    },
-    noAuth:{
-        fontSize:12,
-        color:'red',
-        textAlign:'center',
-        marginTop:5
-    },
-    conteiner:{
-        padding:10
-    }
 });
 
 export default Post
