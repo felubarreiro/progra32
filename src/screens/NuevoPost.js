@@ -22,6 +22,7 @@ class NuevoPost extends Component{
                 message: this.state.message,
                 createdAt: Date.now(),
                 likes: [],
+                comments:[]
             })
             .then(response => {
                 this.setState({posted: true})

@@ -18,44 +18,20 @@ class Comentarios extends Component {
     };
   }
 
-  componentDidMount() {
-    const { postId } = this.props.route.params;
 
-    db.collection("posts")
-      .doc(postId)
-      .collection("comments")
-      .orderBy("createdAt", "asc")
-      .onSnapshot((docs) => {
-        const commentsList = [];
-        docs.forEach((doc) => {
-          commentsList.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        });
-        this.setState({ comments: commentsList });
-      });
-  }
 
   addComment() {
-    const { postId } = this.props.route.params
+    const postId = this.props.route.params.postId
     
 
     db.collection("posts")
       .doc(postId)
-      .collection("comments")
-      .add({
-        email: auth.currentUser.email,
-        text: this.state.comment,
-        createdAt: Date.now(),
-      })
-      .then(() => {
-        this.props.navigation.navigate("HomeMenu");
-      })
-      .catch((error) =>
-        this.setState({ error: "Error al crear el comentario" })
-      );
-  }
+      .update({
+      comments: firebase.firestore.FieldValue.arrayUnion({ email: auth.currentUser.email, text: this.state.comment,}),
+    }).then(() => {this.props.navigation.navigate("HomeMenu")})
+  .catch((error) => {
+    this.setState({ error: "Error al agregar comentario" });
+  });}
 
   render() {
     return (
