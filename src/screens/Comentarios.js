@@ -15,6 +15,7 @@ class Comentarios extends Component {
       comments: [],
       comment: "",
       error: "",
+      post:[]
     };
   }
 
@@ -24,7 +25,7 @@ class Comentarios extends Component {
       .doc(postId)
       .onSnapshot((doc) => {
         const data = doc.data();
-          this.setState({ comments: data.comments });
+          this.setState({ comments: data.comments, post:data });
         })
   }
 
@@ -45,6 +46,11 @@ class Comentarios extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.conteinerP}>
+            <Text style={styles.userEmail}>{this.state.post.email}</Text>
+            <Text style={styles.message}>{this.state.post.message}</Text>
+            <Text style={styles.likes}>{this.state.post.likes ? this.state.post.likes.length : 0} likes</Text>
+        </View>
         <Text style={styles.title}>Comentarios</Text>
         <FlatList
           data={this.state.comments}
@@ -74,10 +80,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F8FA",
     padding: 15,
   },
+  conteinerP: {
+    backgroundColor: '#E8E8E8',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 15,
+    marginHorizontal: 10,
+    marginTop: 20,
+    marginBottom:20
+  },
   title: {
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  userEmail: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+    color: '#000',
+  },
+  likes: {
+  fontSize: 14,
+  color: '#000',
+  },
+  message: {
+  fontSize: 18,
+  marginBottom: 12,
+  color: '#000',
   },
   commentBox: {
     backgroundColor: "#fff",
