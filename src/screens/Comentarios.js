@@ -22,8 +22,6 @@ class Comentarios extends Component {
 
   addComment() {
     const postId = this.props.route.params.postId
-    
-
     db.collection("posts")
       .doc(postId)
       .update({

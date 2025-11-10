@@ -17,6 +17,8 @@ class Register extends Component{
              error1: "",
              error2: "",
              error3: "",
+             errorE:"",
+             errorP:""
         }
     }
     register(email,pass, user){
@@ -26,15 +28,21 @@ class Register extends Component{
       if (email.length < 1) {
         this.setState({ error1: "Este campo es obligatorio" });
         return;
+      }else{
+        this.setState({error1:''})
       }
     
       if (pass.length < 1) {
         this.setState({ error2: "Este campo es obligatorio" });
         return;
+      }else{
+        this.setState({error2:''})
       }
       if (user.length < 1) {
         this.setState({ error3: "Este campo es obligatorio" });
         return;
+      }else{
+        this.setState({error3:''})
       }
         auth.createUserWithEmailAndPassword(email,pass)
         .then(response=>{this.setState({registered:true})
@@ -49,9 +57,20 @@ class Register extends Component{
     })
     .catch(error=> {
       console.log(error);
-      
-      this.setState({error: "fallo en el registro"})})
+      if (error.message.includes('badly formatted')) {
+        this.setState({errorE:'El email esta mal formateado'})
+      }else{
+        this.setState({errorE:''})
+      }
+      if (error.message.includes('least 6 characters')) {
+        this.setState({errorP:'La contraseña debe tener al menos 6 caracteres'})
+      }else{
+        this.setState({errorP:''})
+      }
+    })
 
+      console.log(this.state.errorE);
+      
     }
     
     render(){
@@ -60,21 +79,21 @@ class Register extends Component{
             <Text style={styles.title}>Registro</Text>
             <Text style={styles.subtitle}>Email</Text>
             <TextInput style={styles.form} keyboardType="email-address" onChangeText={text=>this.setState({email:text})} value={this.state.email}/>
-                 {this.state.error1 ? (
+                 {this.state.errorE == '' ? (
           <Text style={styles.error}>{this.state.error1}</Text>
-        ) : null}
+        ) : <Text style={styles.error}>{this.state.errorE}</Text>}
 
             <Text style={styles.subtitle}>Username</Text>
             <TextInput style={styles.form} keyboardType="default" onChangeText={text=>this.setState({userName:text})} value={this.state.userName}/>
-                 {this.state.error3 ? (
-          <Text style={styles.error}>{this.state.error3}</Text>
+                 {this.state.error2 ? (
+          <Text style={styles.error}>{this.state.error2}</Text>
         ) : null}
 
             <Text style={styles.subtitle}>Password</Text>
             <TextInput style={styles.form} keyboardType="default" onChangeText={text=>this.setState({password:text})} value={this.state.password} secureTextEntry={true}/>
-                 {this.state.error2 ? (
-          <Text style={styles.error}>{this.state.error2}</Text>
-        ) : null}
+                 {this.state.errorP ? (
+          <Text style={styles.error}>{this.state.errorP}</Text>
+        ) : <Text style={styles.error}>{this.state.error3}</Text>}
             <Pressable style={styles.boton2} onPress={()=>this.register()}> 
                 <Text>Registrarme</Text>
             </Pressable>
