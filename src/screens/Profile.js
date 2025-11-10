@@ -56,7 +56,7 @@ class Profile extends Component{
         <FlatList
           data={this.state.UserPost}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation} showDelete={true}/>}
+          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation}/>}
         />
         <Pressable style={styles.boton} onPress={()=>auth.signOut()}>
           <Text style={styles.logoutText}>Cerrar sesion</Text>
