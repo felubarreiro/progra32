@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
-import Comentarios from './src/screens/Comment';
+import Comentarios from './src/screens/Comentarios';
 import HomeMenu from "./src/components/HomeMenu";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NuevoPost from './src/screens/NuevoPost';

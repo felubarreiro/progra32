@@ -37,7 +37,6 @@ class Comentarios extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Comentarios</Text>
-
         <FlatList
           data={this.state.comments}
           keyExtractor={(item) => item.id.toString()}

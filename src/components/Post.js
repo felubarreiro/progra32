@@ -42,14 +42,6 @@ class Post extends Component{
             })
         }
     }
-    onDelete(){
-        db.collection('posts').doc(this.props.id).delete()
-        .then(response => {
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
 
     Ircomentarios() {
     if (auth.currentUser) {
@@ -78,12 +70,7 @@ class Post extends Component{
                     <Pressable style={styles.commentButton} onPress={() => this.Ircomentarios()}>
                         <Text style={styles.commentText}>Comentar</Text>
                     </Pressable>
-                </View>
-                {this.props.showDelete && auth.currentUser && auth.currentUser.email === this.props.postData.email ? (
-                <Pressable style={styles.deleteButton} onPress={()=>this.onDelete()}>
-                    <Text style={styles.deleteText}>Borrar post</Text>
-                </Pressable>) : null}
-                
+                </View>  
             </View>
         )
     }

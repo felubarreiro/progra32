@@ -56,10 +56,10 @@ class Profile extends Component{
         <FlatList
           data={this.state.UserPost}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation} showDelete={true}/>}
+          renderItem={({item}) => <Post postData={item.data} id={item.id.toString()} navigation={this.props.navigation}/>}
         />
         <Pressable style={styles.boton} onPress={()=>auth.signOut()}>
-          <Text>Cerrar sesion</Text>
+          <Text style={styles.logoutText}>Cerrar sesion</Text>
         </Pressable>
       </View>
     )
@@ -85,13 +85,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   boton: {
-    backgroundColor: "orange",
+    backgroundColor: "#FFFFFF",
     borderRadius: 4,
     padding: 10,
     alignItems: "center",
+    margin: 10,
+    borderColor:'black',
+    borderWidth:1
   },
   logoutText: {
-    color: "#fff",
+    color: "#FF0000",
     fontWeight: "600",
   },
 });

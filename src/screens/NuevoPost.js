@@ -17,7 +17,8 @@ class NuevoPost extends Component{
     onSubmit(message){
         message = this.state.message
         if(auth.currentUser){
-            db.collection('posts').add({
+            db.collection('posts')
+            .add({
                 email: auth.currentUser.email,
                 message: this.state.message,
                 createdAt: Date.now(),

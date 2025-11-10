@@ -47,7 +47,10 @@ class Register extends Component{
             .catch(error => console.log(error))
             this.props.navigation.navigate('Login')
     })
-    .catch(error=> {this.setState({error: "fallo en el registro"})})
+    .catch(error=> {
+      console.log(error);
+      
+      this.setState({error: "fallo en el registro"})})
 
     }
     
