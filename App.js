@@ -31,8 +31,6 @@ class App extends Component {
         {this.state.User ? (
           <>
           <Stack.Screen name="HomeMenu" component={HomeMenu} options={{headerShown:false}}/>
-          <Stack.Screen name='NuevoPost' component={NuevoPost} options={{headerShown:false}}/>
-          <Stack.Screen name="Comentarios" component={Comentarios}/>
           </>
         ) : (
           <>
