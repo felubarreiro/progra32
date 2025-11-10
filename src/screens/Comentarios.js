@@ -18,6 +18,17 @@ class Comentarios extends Component {
     };
   }
 
+  componentDidMount() {
+    const postId = this.props.route.params.postId;
+    db.collection("posts")
+      .doc(postId)
+      .onSnapshot((doc) => {
+        const data = doc.data();
+          this.setState({ comments: data.comments });
+        })
+  }
+
+
 
 
   addComment() {
@@ -39,7 +50,7 @@ class Comentarios extends Component {
         <Text style={styles.title}>Comentarios</Text>
         <FlatList
           data={this.state.comments}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.email + 1}
           renderItem={({ item }) => (
             <View style={styles.commentBox}>
               <Text style={styles.commentUser}>{item.email}</Text>
