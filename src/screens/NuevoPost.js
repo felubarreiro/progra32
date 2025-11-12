@@ -27,7 +27,7 @@ class NuevoPost extends Component{
             })
             .then(response => {
                 this.setState({posted: true})
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('HomeTab')
             })
             .catch(error => {
                 this.setState({error: 'Fallo al crear el post'})
